@@ -1,45 +1,45 @@
 {
-  "title": "Docker_Lab",
-  "description": "Laboratorio de Uso Docker",
+  "title": "Docker 101",
+  "description": "Introducción a Docker",
   "difficulty": "Beginner",
   "time": "3 hours",
   "details": {
     "steps": [
       {
         "title": "Step 1",
-        "text": "step1.md"
+        "text": "step01.md"
       },
       {
         "title": "Step 2",
-        "text": "step2.md"
+        "text": "step02.md"
       },
       {
         "title": "Step 3",
-        "text": "step3.md"
+        "text": "step03.md"
       },
       {
         "title": "Step 4",
-        "text": "step4.md"
+        "text": "step04.md"
       },
       {
         "title": "Step 5",
-        "text": "step5.md"
+        "text": "step05.md"
       },
       {
         "title": "Step 6",
-        "text": "step6.md"
+        "text": "step06.md"
       },
       {
         "title": "Step 7",
-        "text": "step7.md"
+        "text": "step07.md"
       },
       {
         "title": "Step 8",
-        "text": "step8.md"
+        "text": "step08.md"
       },
       {
         "title": "Step 9",
-        "text": "step9.md"
+        "text": "step09.md"
       },
       {
         "title": "Step 10",
