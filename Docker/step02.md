@@ -68,6 +68,20 @@ Si queremos volver a ejecutar o levantar un contenedor que se encuentra actualme
 ![Docker ps -a (3)](./assets/docker_ps_-a_3.png)
 
 
+## Ejecución en modo interactivo
+
+En las ocasiones en las que queramos interactuar con la ejecución de una imagen en un contenedor, podemos ejecutarla en *modo interactivo*. Por ejemplo, a continuación vamos a descargar la imagen **alpine** (una versión muy ligera de un entorno *Linux*) del registro de *Docker Hub* y ejecutarla en modo interactivo, habilitando una consola dentro del contenedor:
+
+`docker pull alpine`{{execute}}
+`docker run -it alpine sh`{{execute}}
+
+A continuación, podemos emplear el comando `ls -l` para listar los archivos y directorios de la raíz del sistema, que aquellos familiarizados con *Linux* reconocerán.
+
+![Directorios y archivos *alpine*](./assets/alpine_ls-l.png)
+
+Para salir de la instancia de este contenedor, podemos emplear la combinación `Ctrl + D`.
+
+
 ## Etiquetado de imágenes
 
 Cuando utilizamos el comando `pull`, si no especificamos nada más que el nombre de la imagen, nos bajará la última versión disponible de la misma, etiquetada como `:latest`. Por tanto, los siguientes dos comandos descargan la misma imagen a nuestro sistema:
@@ -81,9 +95,8 @@ En la página de una imagen en *Docker Hub*, disponemos de una pestaña de **Tag
 
 ![Etiquetas de la imagen *alpine*](./assets/alpine_tags.png)
 
-Por ejemplo, hagamos la prueba de recuperar 2 versiones de la imagen oficial de **alpine** (una versión muy ligera de un entorno *Linux*):
+Por ejemplo, hagamos la prueba de recuperar una segunda versión de la imagen oficial de **alpine**:
 
-`docker pull alpine`{{execute}}
 `docker pull alpine:3.7`{{execute}}
 `docker images`{{execute}}
 
