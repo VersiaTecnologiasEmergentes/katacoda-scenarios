@@ -1,8 +1,8 @@
 {
   "title": "Docker 101",
   "description": "Introducción a Docker",
-  "difficulty": "Beginner",
-  "time": "3 hours",
+  "difficulty": "Iniciación",
+  "time": "3.5 horas",
   "details": {
     "steps": [
       {
@@ -36,54 +36,6 @@
       {
         "title": "Step 8",
         "text": "step08.md"
-      },
-      {
-        "title": "Step 9",
-        "text": "step09.md"
-      },
-      {
-        "title": "Step 10",
-        "text": "step10.md"
-      },
-      {
-        "title": "Step 11",
-        "text": "step11.md"
-      },
-      {
-        "title": "Step 12",
-        "text": "step12.md"
-      },
-      {
-        "title": "Step 13",
-        "text": "step13.md"
-      },
-      {
-        "title": "Step 14",
-        "text": "step14.md"
-      },
-      {
-        "title": "Step 15",
-        "text": "step15.md"
-      },
-      {
-        "title": "Step 16",
-        "text": "step16.md"
-      },
-      {
-        "title": "Step 17",
-        "text": "step17.md"
-      },
-      {
-        "title": "Step 18",
-        "text": "step18.md"
-      },
-      {
-        "title": "Step 19",
-        "text": "step19.md"
-      },
-      {
-        "title": "Step 20",
-        "text": "step20.md"
       }
     ],
     "intro": {
