@@ -67,12 +67,42 @@ Si queremos volver a ejecutar o levantar un contenedor que se encuentra actualme
 
 ![Docker ps -a (3)](./assets/docker_ps_-a_3.png)
 
+
+## Etiquetado de imágenes
+
+Cuando utilizamos el comando `pull`, si no especificamos nada más que el nombre de la imagen, nos bajará la última versión disponible de la misma, etiquetada como `:latest`. Por tanto, los siguientes dos comandos descargan la misma imagen a nuestro sistema:
+
+`docker pull IMAGEN`
+`docker pull IMAGEN:latest`
+
+No obstante, podemos bajar otras versiones especificando una **etiqueta** (o *tag*) en particular.
+
+En la página de una imagen en *Docker Hub*, disponemos de una pestaña de **Tags** donde se listan las disponibles. Al usar el comando `pull`, podemos añadir el sufijo `:NOMBRE_ETIQUETA` al nombre de la imagen para recuperar una versión concreta de la plantilla.
+
+![Etiquetas de la imagen *alpine*](./assets/alpine_tags.png)
+
+Por ejemplo, hagamos la prueba de recuperar 2 versiones de la imagen oficial de **alpine** (una versión muy ligera de un entorno *Linux*):
+
+`docker pull alpine`{{execute}}
+`docker pull alpine:3.7`{{execute}}
+`docker images`{{execute}}
+
+![Varias versiones de la imagen *alpine*](./assets/alpine_images.png)
+
+
+## Filtrado de imágenes
+
+Tras unas cuantas sesiones de uso en docker, podemos acabar con muchas imágenes descargadas en nuestro sistema listas para ser ejecutadas. Para realizar una búsqueda o filtrado de ellas, podemos concatenar comandos de la siguiente manera:
+
+`docker images -a | grep 'alpine'`{{execute}}
+
+**Nota**: *alpine* puede ser sustituído por cualquier patrón de búsqueda.
+
+![Filtrado por nombre de imágenes *alpine*](./assets/alpine_grep.png)
+
+
 ## Destrucción de imágenes
 
 Cuando no queramos seguir almacenando una imagen en nuestro sistema (bien sea porque es defectuosa, vamos a sustituirla o no queremos que siga ocupando espacio de almacenamiento), podemos proceder a su eliminación mediante el comando `docker rmi`.
 
 `docker rmi hello-world`{{execute}}
-
-*Nota*: El parámetro para `rmi` puede ser tanto el nombre de la imagen como el ID (o sus primeros caracteres). Para más opciones, basta con consultar `docker rmi --help`
-
-En caso de que la imagen tenga un contenedor asociado que la está ejecutando docker nos informará de ello y no nos permitirá borrarla inicialmente.
