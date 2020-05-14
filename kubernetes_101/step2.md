@@ -1,5 +1,7 @@
 # Conociendo nuestro clúster.
 
+## Introducción
+
 > Un clúster es una colección de recursos de cómputo, almacenamiento y redes que Kubernetes usa para ejecutar las diversas cargas de trabajo que componen su sistema.
 
 
@@ -54,7 +56,11 @@ Para ver los nodos que tenemos levantados:
 
 `kubectl get nodes`{{execute}}
 
-Este comando muestra todos los nodos que se pueden utilizar para hospedar nuestras aplicaciones. Ahora solo tenemos un nodo y podemos ver que su estado es *"Ready"* para recibir nuestras aplicaciones.
+Este comando muestra todos los nodos que se pueden utilizar para hospedar nuestras aplicaciones. Ahora solo tenemos un nodo y podemos ver que su estado es *"Ready"* para recibir nuestras aplicaciones. Podemos ver algo más de información usando el modificador *""-o wide"*:
+
+`kubectl get nodes -o wide`{{execute}}
+
+
 
 Podemos usar *"kubectl describe"* para obtener información específica del nodo. Obtendremos información referente a:
 
@@ -78,7 +84,9 @@ Instalaremos Octant de la siguiente forma:
 
 `dpkg -i octant_0.12.1_Linux-64bit.deb`{{execute}}
 
-`$ OCTANT_DISABLE_OPEN_BROWSER=true  OCTANT_LISTENER_ADDR=0.0.0.0:8900 nohup octant &`{{execute}}
+`OCTANT_DISABLE_OPEN_BROWSER=true  OCTANT_LISTENER_ADDR=0.0.0.0:8900 nohup octant &`{{execute}}
+
+Para acceder, seleccionaos en la parte superior del terminal web, pulsar sobre el signo mas y luego pulsar en "Select port to view on Host 1". Escribir 8900, y luego pulsar "Display Port".
 
 
 
