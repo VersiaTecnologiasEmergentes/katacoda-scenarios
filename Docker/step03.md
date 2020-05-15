@@ -67,6 +67,9 @@ RUN django-admin startproject webapp
 # dentro de la carpeta del proyecto
 WORKDIR webapp
 
+# Añadimos una wildcard para acceder de forma externa a la web
+RUN bash -c "echo ALLOWED_HOSTS=[\'*\']" >> /webapp/webapp/settings.py
+
 # Exponemos el puerto 8000
 EXPOSE 8000
 
@@ -91,22 +94,9 @@ Al finalizar, podremos ver que nuestra imagen ya forma parte de nuestro sistema:
 
 ![Webapp image](./assets/webapp_image.png)
 
-Para poder acceder de forma externa a la aplicación web, vamos a modificar la variable `ALLOWED_HOSTS` para que acepte cualquier nombre.
-
-Crearemos un fichero de variables de entorno de nombre `myenv`:
-
-`touch myenv`{{execute}}
-`nano myenv`{{execute}}
-
-Y agregamos y guardamos la siguiente línea:
-
-```
-ALLOWED_HOSTS=['*']
-```
-
 Ahora, podemos ejecutar nuestra imagen en un contenedor:
 
-`docker run --env-file myenv -p 8000:8000 webapp`{{execute}}
+`docker run -p 8000:8000 webapp`{{execute}}
 
 Si accedemos a un navegador, en el equivalente de nuestro entorno para [localhost:8000](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com) podemos ver la vista por defecto de un nuevo proyecto web.
 
