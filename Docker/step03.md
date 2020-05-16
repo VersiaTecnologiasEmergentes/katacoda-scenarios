@@ -80,6 +80,7 @@ CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "webapp.wsgi:application"]
 **Nota**: Podemos crear el fichero utilizando los siguientes comandos. Después copiaremos el contenido de las líneas anteriores en el editor y guardaremos los cambios mediante `Ctrl + X` y `Yes`.
 
 `touch Dockerfile`{{execute}}
+
 `nano Dockerfile`{{execute}}
 
 Una vez definida nuestra imagen personalizada, podemos construirla utilizando el comando `docker build -t NOMBRE .`, dónde *NOMBRE* hace referencia al nombre que queramos darle a la imagen (si ya existe una imagen con el mismo nombre en nuestro sistema la sustituirá, por lo que podemos usar el formato *NOMBRE:ETIQUETA*), y el `.` final indica que la construya en base a las instrucciones del fichero Dockerfile que se encuentra en nuestro directorio actual.
