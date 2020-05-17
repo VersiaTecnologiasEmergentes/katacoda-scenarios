@@ -19,7 +19,8 @@ La configuración de Clair definirá como se deben descargar las imágenes. La d
 
 A continuación bajamos la última versión de Clair y ponemos la contraseña de la base de datos. 
 
-`sed 's/clair-git:latest/clair:v2.0.1/' -i docker-compose.yml && \  sed 's/host=localhost/host=postgres password=password/' -i clair_config/config.yaml`{{execute}}
+`sed 's/clair-git:latest/clair:v2.0.1/' -i docker-compose.yml && \
+  sed 's/host=localhost/host=postgres password=password/' -i clair_config/config.yaml`{{execute}}
 
 Ahora nos toca levantar la base de datos:
 
@@ -54,7 +55,9 @@ Usando klar, ahora podemos apuntarlo a las imágenes y ver qué vulnerabilidades
 `CLAIR_ADDR=http://localhost:6060 CLAIR_OUTPUT=Low CLAIR_THRESHOLD=10 \
   klar quay.io/coreos/clair:v2.0.1`{{execute}}
 
-`CLAIR_ADDR=http://localhost:6060 CLAIR_OUTPUT=Low CLAIR_THRESHOLD=10 \
-  klar ubuntu:18.04 `
-
 `CLAIR_ADDR=http://localhost:6060 CLAIR_OUTPUT=Low CLAIR_THRESHOLD=10   klar hyperledger/sawtooth-validator`{{execute}}
+
+
+
+
+
