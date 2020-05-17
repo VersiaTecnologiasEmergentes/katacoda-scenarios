@@ -1,4 +1,3 @@
-
 # Imágenes en Docker - I
 
 En Docker, uno de los conceptos básicos es el de **imagen**. Una imagen de docker es una especie de plantilla de solo lectura que permite describir un entorno que pueda ser ejecutado en un **contenedor**.
@@ -20,6 +19,10 @@ Este listado nos ofrece información básica sobre las imágenes descargadas en 
 
 A continuación, vamos a descargar una imagen base de [Docker Hub](https://hub.docker.com/). *Docker Hub* es un registro de imágenes de Docker que permite compartir estas plantillas. Existen registros públicos y privados, tanto de forma local como remota, para almacenar y distribuir imágenes.
 
+Podemos hacer búsquedas de imagénes en este repositorio usando *docker search*. Por ejemplo si queremos buscar imágenes relacionadas con redis lo haremos de la siguiente forma:
+
+`docker search redis`{{execute}}
+
 La primera imagen base que utilizaremos es la de [hello world](https://hub.docker.com/_/hello-world). Si accedemos al enlace, podemos ver información básica de la plantilla, así como copiar el comando para descargarnos la imagen a nuestro sistema:
 
 `docker pull hello-world`{{execute}}
@@ -36,7 +39,7 @@ Cuando descargamos una imagen, dicha plantilla está presente en nuestro sistema
 
 ![Running images](./assets/docker_ps.png)
 
-**Nota**: Los nombres de los contenedores se generan de forma automática (a no ser que se especifique un nombre de contenedor concreto). Por tanto, es posible que los nombres mostrados en la imagen no se correspondan con los de vuestro sistema.
+Nota**: Los nombres de los contenedores se generan de forma automática (a no ser que se especifique un nombre de contenedor concreto). Por tanto, es posible que los nombres mostrados en la imagen no se correspondan con los de vuestro sistema.
 
 
 ## Ejecutar una imagen

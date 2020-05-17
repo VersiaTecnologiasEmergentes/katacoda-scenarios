@@ -1,4 +1,3 @@
-
 # Agrupando contenedores: docker-compose
 
 En nuestra operativa diaria, a menudo nos encontramos con arquitecturas complejas e interconectadas que no se solucionan con la creación de un solo entorno.

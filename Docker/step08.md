@@ -1,4 +1,3 @@
-
 # Limpieza
 
 En este apartado mostraremos algunos de los comandos más útiles para limpiar nuestros sistemas y deshacernos de los componentes que ya no utilizamos o que pueden estar ocasionando conflictos.

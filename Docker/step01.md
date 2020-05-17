@@ -13,6 +13,10 @@ Mediante el comando `info`, podemos acceder a información más detallada sobre 
 
 `docker info`{{execute}}
 
+También es interesante ver el estado del servicio docker en la máquina:
+
+`systemctl status docker`{{execute}}
+
 Para obtener un listado completo de los comandos que podemos utilizar en docker, basta con ejecutar:
 
 `docker --help`{{execute}}
