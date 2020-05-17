@@ -13,8 +13,6 @@
 
 - Configurando el NAT para redireccionar la conectividad externa.
 
-- Redes en Docker-compose
-
   
 
 ## Redes en Docker
@@ -87,7 +85,9 @@ De la misma forma podemos desconectarlo de la red:
 
 `docker network disconnect bridge vmlab1`{{execute}}
 
-docker inspect b34311275bc4
+`CONTAINER2=$(docker ps |grep vmlab1| cut -d " " -f1)`{{execute}}
+
+`docker inspect $CONTAINER2`{{execute}}
 
 
 
@@ -101,21 +101,115 @@ Para limpiar el entorno, bastará con que paremos el Docker lo eliminemos y borr
 
 ## Pruebas con las redes
 
+Vamos a crear un red llamada *labnet* y posteriormente levantaremos dos contenedores para hacer algunas pruebas.
 
+Creamos la nueva red:
+
+`docker network create --driver bridge labnet`{{execute}}
+
+`docker network ls`{{execute}}
+
+Levantamos dos contenedores:
+
+`docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
+
+`docker run -dit --rm --name vlab2 --network labnet alpine sh`{{execute}}
+
+Si ahora ejecutamos un inspect sobre la red labnet veremos las redes asignadas a nuestros dos contenedores.
+
+`docker network inspect labnet`{{execute}}
+
+Para comprobar que tenemos red entre ellos podemos hacer attach a uno de los contenedores y probar.
+
+`docker attach vlab1`{{execute}}
+
+`ping -c 3 vlab2`{{execute}}
+
+`^p^q`{{execute}} 
+
+Vamos a complicarlo un poco más creando otra red y levantaremos un contenedor en esta nueva red.
+
+`docker network create --driver bridge labnet2`{{execute}}
+
+`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
+
+Entramos en esta nueva máquina y comprobamos que no llegamos por ping ni a vlab1 ni a vlab2 ya que están en otra red.
+
+`docker attach vlab3`{{execute}}
+
+`ping -c 2 vlab2`{{execute}}
+
+`ping -c 2 vlab1`{{execute}}
+
+`^p^q`{{execute}} 
+
+Vamos a conectar vlab3 a la red labnet y comprobar que llemaos al resto de instancias.
+
+`docker network connect labnet vlab3`{{execute}}
+
+`docker attach vlab3`{{execute}}
+
+`ping -c2 vlab1`{{execute}}
+
+`ping -c2 vlab2`{{execute}}
+
+`^p^q`{{execute}} 
+
+
+
+Para terminar vamos a borrar todo para dejar el entorno lo más limpio posible.
+
+`docker stop $(docker ps -qa)`{{execute}}
+
+`docker network prune`{{execute}}
 
 
 
 ## Red Host
 
+Si conectamos un contenedor a la red host estaremos exponiendo los servicios directamente desde el anfitrión. Para hacer una prueba rápida usaremos un contenedor *nginx* de la siguiente forma.
+
+Lanzamos la instncia del docker nginx en la red host:
+
+`docker run -d --rm --name nginx1 --network host nginx`{{execute}}
+
+Comprobamos que se ha levantado correctamente
+
+`docker ps -a`{{execute}}
+
+Probamos desde la máquina anfitrion:
+
+`curl localhost`{{execute}}
+
+Limpiamos para terminar esta prueba:
+
+`docker stop $(docker ps -qa)`{{execute}}
+
 
 
 ## Configurando el NAT para redireccionar la conectividad externa.
 
+Vamos a ver como hacer NAT con los puertos de la red host hacia una estancia determinada.
+
+Creamos la instancia de nginx redirigiendo el puerto 8080 del host anfitrion al 80 de la instancia:
+
+`docker run -d --rm --name nginx1 -p 8080:80 nginx`{{execute}}
+
+`docker ps -a`{{execute}}
+
+Comprobamos que llegamos a través del host anfitrion por el 8080:
+
+`curl localhost:8080`{{execute}}
+
+Comprobamos la ip asignada a la instancia para comprobar que llegamos directamente por el puerto 80:
+
+`docker network inspect bridge`{{execute}}
+
+Hacemos: curl IP_ASIGNADA:80
 
 
 
+Para terminar limpiamos el entorno:
 
-## Redes en docker-compose
-
-
+`docker stop $(docker ps -qa)`{{execute}}
 
