@@ -41,6 +41,11 @@
       "course_id": "kubernetes-101-08",
       "title": "08. Almacenamiento",
       "description": "Introducción al almacenamiento en Kubernetes."
+    },
+    {
+      "course_id": "kubernetes-101-09",
+      "title": "09. Ejemplo",
+      "description": "Ejemplos."
     }
   ]
 }
