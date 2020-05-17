@@ -32,3 +32,9 @@ Para aplicar el update:
 Podemos comprobar como el deployment crea unos nuevos Pods con la nueva imagen mientras va eliminando los Pods con especificación antigua.
 
 `kubectl get pods -l app=nginx`{{execute}}
+
+`kubectl describe pods nginx`{{execute}}
+
+Podemos ver como los pods tienen la nueva versión:
+
+`kubectl describe pods nginx`{{execute}}

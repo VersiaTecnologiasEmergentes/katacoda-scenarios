@@ -26,10 +26,14 @@ Explicamos algunas de las partes del fichero:
 
 - **apiVersion.** Indicamos la versión que necesitamos.
 - **kind.** Es donde indicamos el tipo de componente que queremos crear.
-- **metadata.** Nos sirve para poner determinadas características al Pod. Más adelante veremos la utilidad de los labels.
+- **metadata.** Incluye el nombre, el namespace, las etiquetas y otra información sobre el pod.
 - **spec.** Lugar donde definimos las especificaciones del Pod. Por ejemplo el nombre de la imagen que vamos a usar.
 
-Existen numerosas etiquetas que no vamos a ver, pero que nos podemos ir encontrando en ejemplos y en la documentación.
+Existen numerosas etiquetas que no vamos a ver, pero que nos podemos ir encontrando en ejemplos y en la documentación. También podemos preguntar a Kubernetes para que nos muestre algo de información.
+
+`kubectl explain pods`{{execute}}
+
+`kubectl explain pod.spec`{{execute}}
 
 Para crear nuestro primer Pod con un fichero *"yaml"* usaremos el modificador **create** de kubectl:
 

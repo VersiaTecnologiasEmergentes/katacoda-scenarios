@@ -1,34 +1,13 @@
-# Escalando la aplicación aumentando el número de replicas.
+# Rollback de nuestra aplicación.
 
-Podemos aumentar el número de pods en nuestro deployment aplicando un nuevo fichero yaml como este:
+Los deployments nos brindan la posibilidad de volver a versiones anteriores. Podemos sacar el hisotrial con:
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-spec:
-  selector:
-    matchLabels:
-      app: nginx
-  replicas: 4 # Actualiza el número de réplicas de 2 a 4
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:1.8
-        ports:
-        - containerPort: 80
-```
+`kubectl rollout history deployment nginx-deployment`{{execute}}
 
-Aplicamos los cambios de escalado:
+Para volver atrás:
 
-`kubectl apply -f kubernetes_101_lab/deplyment/lab1/deployment-scale.yaml`{{execute}}
+`kubectl rollout undo deployment nginx-deployment`{{execute}}
 
-`kubectl get pods -l app=nginx`{{execute}}
+Podemos ver como los Pods han vuelto a la versión anterior:
 
-
-
+`kubectl describe pods`{{execute}}

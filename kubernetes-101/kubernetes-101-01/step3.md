@@ -29,6 +29,8 @@ Podemos ver aquí los componentes que conforman el clúster de Kubernetes.
 - **scheduleres** responsable de colocar diferentes Pods en diferentes nodos en el clúster. 
 - **etcd** Es el almacenamiento para el clúster donde se almacenan todos los objetos API.
 
+![image-20200517013252260](./assets/master_architecture.png)
+
 
 
 ## Kubeconfig

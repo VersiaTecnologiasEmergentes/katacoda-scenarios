@@ -21,6 +21,26 @@
       "course_id": "kubernetes-101-04",
       "title": "04. Deployments",
       "description": "Introducción a los Deployments"
+    },
+    {
+      "course_id": "kubernetes-101-05",
+      "title": "05. Labels y Selectors",
+      "description": "Introducción a los Labels y Selectors"
+    },
+    {
+      "course_id": "kubernetes-101-06",
+      "title": "06. Services",
+      "description": "Introducción a los Servicios"
+    },
+    {
+      "course_id": "kubernetes-101-07",
+      "title": "07. Namespaces",
+      "description": "Introducción a los Namespaces"
+    },
+    {
+      "course_id": "kubernetes-101-08",
+      "title": "08. Almacenamiento",
+      "description": "Introducción al almacenamiento en Kubernetes."
     }
   ]
 }

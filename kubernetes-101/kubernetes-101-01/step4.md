@@ -1,4 +1,3 @@
-
 ## Nodos
 
 > Un nodo es un único host. Puede ser una máquina física o virtual. Su trabajo es ejecutar pods, que son la unidad mínima de procesamiento de Kubernetes. Cada nodo de Kubernetes ejecuta varios componentes de Kubernetes, como pueden ser  *kubelet* y *kube proxy*. Los nodos son gestionados por el nodo master. 

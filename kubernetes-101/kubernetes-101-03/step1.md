@@ -79,7 +79,7 @@ Comprobamos el estado de los Pods:
 
 Comprobamos las características del despliegue:
 
-`kubectl describe multipod`{{execute}}
+`kubectl describe pod multipod`{{execute}}
 
 Comprobamos que funciona correctamente mediante:
 

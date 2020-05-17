@@ -25,7 +25,13 @@ Abrimos Octant. Para acceder, seleccionaos en la parte superior del terminal web
 
 ## Introducción
 
+El **Deployment** es la unidad de más alto nivel que podemos gestionar en Kubernetes. Entre otras cosas, nos permite definir diferentes funcoines, como:
 
+- Control de replicas.
+- Escalabilidad del Pod.
+- Actualizaciones continuas.
+- Despliegues automáticos.
+- Roolbacks a versiones anteriores.
 
 
 
@@ -80,4 +86,6 @@ Podemos obtener información de cualquiera de los pod mediante describe
 ```bash
 kubectl describe pod <pod-name>
 ```
+
+El despliegue de un `Deployment` crea un ReplicaSet y los Pods correspondientes. Por lo tanto en la definición de un `Deployment` se define también el replicaSet asociado. En la práctica siempre vamos a trabajar con `Deployment`.
 
