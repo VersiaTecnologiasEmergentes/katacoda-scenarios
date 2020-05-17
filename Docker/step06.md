@@ -97,6 +97,8 @@ Para limpiar el entorno, bastará con que paremos el Docker lo eliminemos y borr
 
 `docker rm $(docker ps -qa)`{{execute}}
 
+`docker network prune -f`{{execute}}
+
 
 
 ## Pruebas con las redes
@@ -115,6 +117,8 @@ Levantamos dos contenedores:
 
 `docker run -dit --rm --name vlab2 --network labnet alpine sh`{{execute}}
 
+`docker ps -a`{{execute}}
+
 Si ahora ejecutamos un inspect sobre la red labnet veremos las redes asignadas a nuestros dos contenedores.
 
 `docker network inspect labnet`{{execute}}
@@ -125,11 +129,19 @@ Para comprobar que tenemos red entre ellos podemos hacer attach a uno de los con
 
 `ping -c 3 vlab2`{{execute}}
 
-`^p^q`{{execute}} 
+`exit`{{execute}} 
+
+AL salir, katakoda mata el container, por lo que debemos levantarlo otra vez. En un entorno normal saldríamos de la consola con "^q^p"
+
+`docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
 
 Vamos a complicarlo un poco más creando otra red y levantaremos un contenedor en esta nueva red.
 
 `docker network create --driver bridge labnet2`{{execute}}
+
+Comprobamos que la red se ha creado correctamente:
+
+`docker network list`{{execute}}
 
 `docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
 
@@ -141,7 +153,9 @@ Entramos en esta nueva máquina y comprobamos que no llegamos por ping ni a vlab
 
 `ping -c 2 vlab1`{{execute}}
 
-`^p^q`{{execute}} 
+`exit`{{execute}} 
+
+`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
 
 Vamos a conectar vlab3 a la red labnet y comprobar que llemaos al resto de instancias.
 
@@ -153,7 +167,9 @@ Vamos a conectar vlab3 a la red labnet y comprobar que llemaos al resto de insta
 
 `ping -c2 vlab2`{{execute}}
 
-`^p^q`{{execute}} 
+`exit`{{execute}} 
+
+`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
 
 
 
@@ -161,7 +177,7 @@ Para terminar vamos a borrar todo para dejar el entorno lo más limpio posible.
 
 `docker stop $(docker ps -qa)`{{execute}}
 
-`docker network prune`{{execute}}
+`docker network prune -f`{{execute}}
 
 
 
