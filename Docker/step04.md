@@ -124,3 +124,17 @@ Comprobamos que el nuevo archivo se a creado correctamente:
 
 `ls /dockerfilevollab/`{{execute}}
 
+Salimos del contenedor:
+
+`exit`{{execute}}
+
+Ahora vamos a comprobar que el archivo efectivamente existe en el host. Para determinar cual es la hubicación que Docker le otorga al Volumen podemos inspeccionar el contenedor para comprobar dicho path:
+
+`docker inspect lab-dockerfile`{{execute}}
+
+Para capturar la ruta asignada tendremos que localizar la sección "Mounts" y copiar la propiedad "Source". Si listamos el contenido del path copiado vemos el fichero creado desde el contenedor.
+
+```bash
+$ ls /var/lib/docker/volumes/268e7e4aaa5591f21572ffbb21f4de55e393bddbfa9bd6e1400fd1bde7c6575d/_data
+file-from-container-lab.txt
+```
