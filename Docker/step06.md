@@ -16,7 +16,7 @@ Son estas situaciones las que nos permiten dar el siguiente paso en el ecosistem
 
 A través de un fichero [YAML](https://yaml.org/), podemos definir los componentes que interactúan entre sí para definir nuestra arquitectura, así como las dependencias entre ellos y la configuración necesaria para su ejecución.
 
-El primer acercamiento lo podemos realizar mediante un fichero que ejecute la imagen creada en el paso anterior, recuperándola del registro de Docker Hub.
+El primer acercamiento lo podemos realizar mediante un fichero que ejecute la imagen creada anteriormente, recuperándola del registro de Docker Hub.
 
 Para ello, crearemos un fichero llamado **docker-compose.yml** (la extensión *.yaml* también es válida) y copiaremos en él el siguiente contenido (es **muy importante** respetar el espaciado, ya que *YAML* es un formato basado en la tabulación mediante espacios):
 
