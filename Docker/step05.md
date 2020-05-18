@@ -59,7 +59,7 @@ Podemos revisar sus carecterísticas con:
 
 `docker network inspect test`{{execute}}
 
-SI queremos ver como responde el Gateway de la nueva red:
+Si queremos ver como responde el Gateway de la nueva red:
 
 `ping 172.18.0.1 -c 3`{{execute}}
 
@@ -175,7 +175,7 @@ Para terminar vamos a borrar todo para dejar el entorno lo más limpio posible.
 
 
 
-## Red Host
+## Red HOST
 
 Si conectamos un contenedor a la red host estaremos exponiendo los servicios directamente desde el anfitrión. Para hacer una prueba rápida usaremos un contenedor *nginx* de la siguiente forma.
 
@@ -223,4 +223,3 @@ Hacemos: curl IP_ASIGNADA:80
 Para terminar limpiamos el entorno:
 
 `docker stop $(docker ps -qa)`{{execute}}
-
