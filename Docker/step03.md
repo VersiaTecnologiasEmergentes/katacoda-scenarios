@@ -1,6 +1,12 @@
+
 # Imágenes en Docker - II
 
-En esta sección, veremos como crear una imagen propia de Docker desde una imagen base, personalizándola para que se adecúe a nuestros objetivos.
+**CONTENIDO**
+
+- Dockerfile
+- Definiendo nuestra imagen
+- Registros Docker
+
 
 
 ## Dockerfile
@@ -37,7 +43,8 @@ Dentro de un Dockerfile podemos especificar un gran número de instrucciones ([l
 La combinación de estas instrucciones junto con los parámetros proporcionados nos permitirán generar instantáneas muy concretas para satisfacer nuestras necesidades.
 
 
-## Definiendo nuestra propia imagen
+
+## Definiendo nuestra imagen
 
 Para esta parte del laboratorio, vamos a crear nuestra propia imagen para servir una aplicación web.
 
@@ -101,6 +108,7 @@ Si accedemos a un navegador, en el equivalente de nuestro entorno para [localhos
 ![Nuestra aplicación web desplegada](./assets/working_django.png)
 
 Podemos proceder a parar la ejecución del contenedor mediante `Ctrl + C`
+
 
 
 ## Registros Docker

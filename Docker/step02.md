@@ -1,4 +1,19 @@
+
 # Imágenes en Docker - I
+
+**CONTENIDO**
+
+- Introducción
+- Descargar una imagen
+- Ejecutar una imagen
+- Ejecución en modo interactivo
+- Etiquetado de imágenes
+- Filtrado de imágenes
+- Destrucción de imágenes
+
+
+
+## Introducción
 
 En Docker, uno de los conceptos básicos es el de **imagen**. Una imagen de docker es una especie de plantilla de solo lectura que permite describir un entorno que pueda ser ejecutado en un **contenedor**.
 
@@ -13,6 +28,7 @@ El entorno de *katakoda* nos da algunas imágenes por defecto. Podemos observarl
 ![Default images](./assets/default_images.png)
 
 Este listado nos ofrece información básica sobre las imágenes descargadas en nuestro sistema (repositorio oficial, etiqueta, ID, fecha de creación y tamaño).
+
 
 
 ## Descargar una imagen
@@ -42,6 +58,7 @@ Cuando descargamos una imagen, dicha plantilla está presente en nuestro sistema
 ![Running images](./assets/docker_ps.png)
 
 **Nota**: Los nombres de los contenedores se generan de forma automática (a no ser que se especifique un nombre de contenedor concreto). Por tanto, es posible que los nombres mostrados en la imagen no se correspondan con los de vuestro sistema.
+
 
 
 ## Ejecutar una imagen
@@ -75,6 +92,7 @@ Si queremos volver a ejecutar o levantar un contenedor que se encuentra actualme
 ![Docker ps -a (3)](./assets/docker_ps_-a_3.png)
 
 
+
 ## Ejecución en modo interactivo
 
 En las ocasiones en las que queramos interactuar con la ejecución de una imagen en un contenedor, podemos ejecutarla en *modo interactivo*. Por ejemplo, a continuación vamos a descargar la imagen [alpine](https://hub.docker.com/_/alpine) (una versión muy ligera de un entorno *Linux*) del registro de *Docker Hub* y ejecutarla en modo interactivo, habilitando una consola dentro del contenedor:
@@ -88,6 +106,7 @@ A continuación, podemos emplear el comando `ls -l` para listar los archivos y d
 ![Directorios y archivos *alpine*](./assets/alpine_ls-l.png)
 
 Para salir de la instancia de este contenedor, podemos emplear la combinación `Ctrl + D`.
+
 
 
 ## Etiquetado de imágenes
@@ -113,6 +132,7 @@ Por ejemplo, hagamos la prueba de recuperar una segunda versión de la imagen of
 ![Varias versiones de la imagen *alpine*](./assets/alpine_images.png)
 
 
+
 ## Filtrado de imágenes
 
 Tras unas cuantas sesiones de uso en docker, podemos acabar con muchas imágenes descargadas en nuestro sistema listas para ser ejecutadas. Para realizar una búsqueda o filtrado de ellas, podemos concatenar comandos de la siguiente manera:
@@ -122,6 +142,7 @@ Tras unas cuantas sesiones de uso en docker, podemos acabar con muchas imágenes
 **Nota**: *alpine* puede ser sustituído por cualquier patrón de búsqueda.
 
 ![Filtrado por nombre de imágenes *alpine*](./assets/alpine_grep.png)
+
 
 
 ## Destrucción de imágenes

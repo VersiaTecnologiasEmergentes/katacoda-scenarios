@@ -1,113 +1,92 @@
-# Agrupando contenedores: docker-compose
 
-En nuestra operativa diaria, a menudo nos encontramos con arquitecturas complejas e interconectadas que no se solucionan con la creación de un solo entorno.
+# Volúmenes
 
-Son estas situaciones las que nos permiten dar el siguiente paso en el ecosistema Docker: **Docker compose**.
+**CONTENIDO**
 
-
-## Docker-compose
-
-Docker compose es una herramienta para la definición y ejecución de aplicaciones multi-contenedor.
-
-A través de un fichero [YAML](https://yaml.org/), podemos definir los componentes que interactúan entre sí para definir nuestra arquitectura, así como las dependencias entre ellos y la configuración necesaria para su ejecución.
-
-El primer acercamiento lo podemos realizar mediante un fichero que ejecute la imagen creada en el paso anterior, recuperándola del registro de Docker Hub.
-
-Para ello, crearemos un fichero llamado **docker-compose.yml** (la extensión *.yaml* también es válida) y copiaremos en él el siguiente contenido (es **muy importante** respetar el espaciado, ya que *YAML* es un formato basado en la tabulación mediante espacios):
-
-`nano docker-compose.yml`{{execute}}
-
-```
-version: '3'
-
-services:
-
-  django_webapp:
-    image: oscarpdr/webapp:1.0
-    ports:
-      - 8000:8000
-    container_name: django_webapp
-```
-
-Este fichero de composición especifica que utilizaremos la versión 3 del modelo de definición de docker-compose (más información sobre versionado y actualizaciones entre versiones en la [documentación oficial](https://docs.docker.com/compose/compose-file/compose-versioning/)).
-
-Después, describe un servicio de nombre `django_webapp` que ejecutará una instancia de la imagen `oscarpdr/webapp:0.1` en un contenedor de nombre `django_webapp`.
-
-A continuación, ejecutamos el comando `docker-compose up` para desplegar la arquitectura definida. En caso de que tengamos varios ficheros docker-compose, podemos indicar el deseado con el modificador `docker-compose -f NOMBRE_FICHERO up`. Todos los parámetros pueden ser consultados a través de `docker-compose --help`. También podemos ejecutar el proceso en segundo plano, disponiendo de nuevo de la consola.
-
-`docker ps`{{execute}}
-
-`docker-compose up -d`{{execute}}
-
-`docker ps`{{execute}}
-
-![docker-compose up](./assets/docker-compose_up.png)
-
-Podemos observar que la imagen se ha descargado del registro para instanciarla dentro de un contenedor al que hemos denominado `django_webapp`.
-
-La aplicación web desplegada puede ser accedida, nuevamente, desde el equivalente a [localhost:8000](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com).
-
-Si queremos consultar sus *logs* (al menos aquellos redirigidos a la salida estándar), podemos emplear el siguiente comando (solo nos mostrará las últimas líneas del log y nos devolverá el control a la consola):
-
-`docker-compose logs`{{execute}}
-
-También podemos utilizar modificadores del comando `docker-compose logs` para mantener vivo el registro de logs y observar en tiempo real cualquier tipo de incidencia que sea notificada (hasta que la consola recupere el control a través de `Ctrl + C`). En este caso, recuperaremos los últimos 100 registros de logs y obtendremos las nuevas entradas a medida que sucedan:
-
-`docker-compose logs --tail 100 -f`{{execute}}
-
-Para parar el contenedor en ejecución y eliminarlo podemos utilizar el comando `docker-compose down`, el cual buscará todos los servicios referenciados en nuestro fichero *docker-compose.yml*, parará sus contenedores y los eliminará. Las imágenes continúan descargadas en nuestro sistema.
-
-`docker-compose down`{{execute}}
-
-![docker-compose down](./assets/docker-compose_down.png)
+- Introducción
+- Creación de un volúmen
 
 
-## Composición multi-contenedor
+## Introducción
 
-En esta etapa, vamos a utilizar *Docker compose* para gestionar múltiples contenedores, extendiendo ligeramente la funcionalidad vista hasta el momento.
+El sistema de ficheros de un contenedor docker se almacena en su capa de escritura, la cual puede ser accedida si ejecutamos una instancia en modo interactivo, permitiéndonos leer y escribir datos de dicho sistema.
 
-En primer lugar, clonaremos [el repositorio](https://github.com/VersiaTecnologiasEmergentes/docker_webapp) con el código de la aplicación web generada anteriormente. Para ello, utilizaremos el software de versionado *git*:
+No obstante, esto nos plantea algunas problemáticas:
 
-`git clone https://github.com/VersiaTecnologiasEmergentes/docker_webapp.git`{{execute}}
+- El sistema de ficheros solo tiene validez mientras el contenedor existe, perdiéndose una vez este es borrado.
+- Inicialmente, los datos solo son accesibles por el propio contenedor.
 
-A continuación, situaremos nuestro directorio de trabajo dentro del repositorio que acabamos de clonar (descargar):
+En los entornos reales (de desarrollo y producción), normalmente necesitamos persistir información de los contenedores en ejecución, así como compartir su acceso (y posible modificación) por parte de otros contenedores que formen parte de nuestra arquitectura (bases de datos, registros comunes, etc).
 
-`cd docker_webapp`{{execute}}
+Es en estas situaciones en las que recurriremos a los volúmenes de Docker.
+
+Existen dos modos principales de persistir datos en el ecosistema Docker:
+
+- **Volumes**: El modo por defecto para persistir datos en Docker. Mediante los volúmenes, los datos se almacenan en una partición del sistema de archivos del host (por defecto, en entornos *Linux* dentro de `/var/lib/docker/volumes/`), y solo pueden ser accedidos por procesos Docker.
+- **Bind mounts**: Pueden ser almacenados en cualquier directorio del sistema host, y su gestión no queda limitado simplemente a los procesos Docker.
+
+Existen otras opciones como **tmpfs**, cuyos datos solo están presentes en la memoria del sistema host y no se persisten como tal.
+
+La principal diferencia a la hora de seleccionar *volumes* o *bind-mounts* radica en la existencia previa de una determinada estructura de almacenar la información en el sistema host. De forma generalizada:
+
+- Preferiremos el uso de *volumes* cuando queramos compartir datos entre diversos contenedores (con diversos permisos de escritura/lectura, así como accesos simultáneos, etc). Al montar el volúmen por primera vez en un contenedor, este se crea si no existe previamente. También facilita los procesos de *back-up* y recuperación de información. Finalmente, los volúmenes pueden ser empleados en diversos sistemas operativos hosts, así como en servicios en la nube, ser cifrados, etc.
+- Favoreceremos el uso de *bind-mounts* cuando compartamos ficheros de configuración del sistema host al contenedor (por ejemplo, resolución de *DNS*). También cuando la estructura de ficheros y directorios sea constante en las máquinas hosts (siguiendo siempre los mismos patrones y *paths*).
+
+
+## Creación de un volúmen
+
+A la hora de crear un volúmen en Docker, podemos escoger un nombre predeterminado para el mismo, o dejar que Docker le asigne uno de forma automática. De optar por la primera vía (para este ejemplo utilizaremos el nombre `my_data`), el comando que utilizaremos es:
+
+`docker volume create my_data`{{execute}}
+
+Esto creará una carpeta en nuestro sistema host, en la ruta `/var/lib/docker/volumes/my_data/`.
+
+`ll /var/lib/docker/volumes/my_data/`{{execute}}
+
+![Directorio creado para nuestro volumen](./assets/ll_docker_volume.png)
+
+Podremos inspeccionar las propiedades de este volúmen a través de:
+
+`docker volume inspect my_data`{{execute}}
+
+![Propiedades del volúmen *my_data*](./assets/docker_volume_inspect.png)
+
+Para consultar los volúmenes existentes, basta con:
+
+`docker volume ls`{{execute}}
+
+A continuación, arrancaremos un contenedor que utilice este volúmen, mediante el modificador `-v` de la ejecución de una imagen:
+
+`docker run -it --name ubuntu-volume -v my_data:/data ubuntu bash`{{execute}}
 
 `ll`{{execute}}
 
-En este directorio, podemos observar que contamos con varios ficheros y directorios:
+`cd /data/`{{execute}}
 
-- **Dockerfile**: Esta imagen es ligeramente diferente a la generada con anterioridad, no obstante, el resultado es muy similar. La principal diferencia radica en que en este caso utilizamos una imagen de *python v3.7 alpine* en lugar de una *Ubuntu*, el código de la aplicación web lo copiamos de nuestro sistema host al directorio `/code` de la imagen, y finalmente instalamos los paquetes necesarios mediante un fichero de requisitos.
-- **requirements.txt**: Fichero que recoge los paquetes necesarios para el funcionamiento de la aplicación.
-- **docker-compose.yml**: Este es el fichero más relevante dentro del repositorio, pasaremos a analizarlo a continuación.
-- **webapp/**: Código de una aplicación web en *Django* muy similar a la generada por defecto.
+![Volúmen *my_data* en contenedor](./assets/docker_volume_run.png)
 
-Ahora nos centraremos en comprender el contenido del fichero *docker-compose*:
+Los archivos creados en este directorio, se persistirán al sistema host, en la ruta por defecto `/var/lib/docker/volumes/my_data/_data/`:
 
-`nano docker-compose.yml`{{execute}}
+`echo "Persistiendo datos" >> fichero.txt`{{execute}}
 
-Los dos primeros bloques hacen referencia a los volúmenes y redes que serán compartidas por todos los contenedores a los que hagamos referencia.
+`cat fichero.txt`{{execute}}
 
-Después, comenzamos a describir los servicios que formarán parte de nuestro entorno:
+Si paramos el contenedor (`Ctrl + D`), podremos comprobar que los datos han sido mapeados al sistema de ficheros del host:
 
-El servicio **django_webapp** construye la imagen siguiendo las instrucciones del fichero *Dockerfile* del directorio actual (puede especificarse otra ruta). Mapea el puerto 8000 del host al del contenedor, y ejecuta mediante *bash* los comandos de *Django* necesarios para desplegar la aplicación web. La red será compartida con el resto de servicios, y mapeará el contenido de la carpeta *webapp/* del host con la carpeta *code/* del sistema de ficheros de la imagen instanciada.
+`cat /var/lib/docker/volumes/my_data/_data/fichero.txt`{{execute}}
 
-El segundo servicio, ejecuta un contenedor con **prometheus**, concretando su ejecución a través de los parámetros `command`. Hemos configurado la variable para que se reinicie el contenedor si se encuentra parado y no ha sido por una acción directa nuestra. Finalmente, mediante `depends_on` establecemos el orden de arranque: el contenedor *prometheus* esperará a que esté arrancada la instancia de *django_webapp* (lo que nos puede evitar arranque erróneos derivados de dependencias).
+Finalmente, podremos deshacernos de un volúmen concreto mediante `docker volume rm`:
 
-Por último, levantaremos un **grafana** para visualizar las métricas de *prometheus* mapeando el puerto 3000. Este será el último servicio a desplegar.
+`docker volume rm my_data`{{execute}}
 
-Mediante `docker-compose up` podemos ejecutar toda la definición, seguros de que se respetarán las prioridades e instrucciones específicas de cada contenedor:
+Si el volúmen está en uso por algún contenedor en ejecución, Docker nos informará de ello y no permitirá su eliminación hasta que el contenedor se detenga:
 
-`docker-compose up -d`{{execute}}
+`docker stop ubuntu-volume`{{execute}}
 
-Esto nos permitirá acceder a:
-- [Aplicación web](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com)
-- [Grafana](https://[[HOST_SUBDOMAIN]]-3000-[[KATACODA_HOST]].environments.katacoda.com)
-- [Prometheus](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com)
+`docker rm ubuntu-volume`{{execute}}
 
-Finalmente, podemos parar todos los contenedores de forma segura lanzando:
+`docker volume rm my_data`{{execute}}
 
-`docker-compose stop`
+Una vez eliminado, podemos comprobar que ya no aparece listado en los volúmenes del sistema:
 
-**Nota**: Empleando `docker-compose down` además se borrarían los contenedores una vez parados, evitando en el futuro realizar un `docker rm CONTENEDOR_1 ... CONTENEDOR_n`
+`docker volume ls`{{execute}}
