@@ -43,4 +43,32 @@ Comprobamos que el archivo está creado en el directorio "/data":
 Con el fin de poner a prueba la persistencia, vamos a salir del contenedor y a eliminarlo:
 
 `exit`{{execute}}
-`docker container rmi lab-volume-test`{{execute}}
+`docker container rm lab-volume-test`{{execute}}
+
+Volvemos a crear contenedor asociando el mismo volumen y comprobamos que sigue existiendo el fichero creado anteriormente:
+
+`docker run -it --name lab-volume-test -v lab-volume:/data ubuntu /bin/bash`{{execute}}
+`ls /data`{{execute}}
+
+Salimos del contenedor y lo eliminamos:
+
+`exit`{{execute}}
+`docker container rm lab-volume-test`{{execute}}
+
+Ahora vamos a inspeccionar el Volumen creado con el fin de ver sus características agregando "inspect" al comando "volume":
+
+`docker volume inspect lab-volume`{{execute}}
+
+Como podemos ver, entre otros datos, nos proporciona la ruta donde está alojado el volumen en el host.
+
+Por último, vamos a eliminar el volumen:
+
+`docker volume rm lab-volume`{{execute}}
+
+En este punto tenemos que tener en cuenta que, si el Volumen a eliminar está siendo utilizado por algún contenedor, previamente tendremos que eliminar el contenedor ya que Docker no nos permitirá eliminarlo mientras esté en uso.
+
+**Especificando un Directorio del Host**
+
+Si necesitamos especificar un directorio concreto del host a la hora de crear un Volumen lo podemos realizar a través del argumento "-v". Vamos a crear un nuevo directorio en el host que nos sirva como base para la creación de un nuevo volumen:
+
+`mkdir /labdirectory`{{execute}}
