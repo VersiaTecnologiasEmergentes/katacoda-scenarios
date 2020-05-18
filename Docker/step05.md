@@ -20,7 +20,27 @@ Docker proporciona dos opciones para que los contenedores almacenen archivos en 
 ## Volumenes desde linea de comandos.
 El comando que utilizaremos desde linea de comandos para la creación de volúmenes es "docker volume create". Un punto a tener en cuenta es darle un nombre que permita, a posteriori, localizar y asignar Volúmnes de Docker a contenedores.
 
-Un ejemplo de creación de Volumen podría ser el siguiente:
+Vamos a crear un nuevo volumen con el nombre "lab-volume":
 
 `docker volume create --name lab-volume`{{execute}}
 
+Para comprobar su correcta creación vamos a listar los volúmenes disponibles actualmente:
+
+`docker volume ls`{{execute}}
+
+Ahora que ya tenemos creado el nuevo volumen, ya podemos utilizarlo en contenedores. Vamos a crear un nuevo contenedor que haga uso del contenedor que acabamos de crear:
+
+`docker run -it --name lab-volume-test -v lab-volume:/data ubuntu /bin/bash`{{execute}}
+
+Todo lo que creemos sobre el directorio "/data" del contenedor será persistido en el volumen "lab-volume" y, mientras no eliminemos el volumen, no perderemos los datos existentes. Para comprobar esto, vamos a crear un nuevo archivo de texto en el directorio "/data":
+
+`echo -e "Prueba de Persistencia de Volumenes" >> /data/VolumesTestLine.txt`{{execute}}
+
+Comprobamos que el archivo está creado en el directorio "/data":
+
+`ls /data`{{execute}}
+
+Con el fin de poner a prueba la persistencia, vamos a salir del contenedor y a eliminarlo:
+
+`exit`{{execute}}
+`docker container rmi lab-volume-test`{{execute}}
