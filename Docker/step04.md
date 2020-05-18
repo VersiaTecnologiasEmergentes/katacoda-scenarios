@@ -103,3 +103,24 @@ Agregamos a la configuración nuevo volumen:
 `VOLUME /dockerfilevollab`{{execute}}
 
 Guardamos el archivo pulsando "Ctrl+D".
+
+Ahora que ya tenemos creado el archivo Dockerfile construimos la imagen con el nombre "dockerfile-volumelab":
+
+`docker build -t dockerfile-volumelab .`{{execute}}
+
+Comprobamos que la nueva imagen se haya generado correctamente:
+
+`docker image ls`{{execute}}
+
+Lanzamos contenedor a partir de nueva imagen:
+
+`docker run --name lab-dockerfile -it dockerfile-volumelab /bin/bash`{{execute}}
+
+Creamos nuevo archivo desde contenedor sobre el volumen configurado:
+
+`echo "Lab Volumenes" >> /dockerfilevollab/file-from-container-lab.txt`{{execute}}
+
+Comprobamos que el nuevo archivo se a creado correctamente:
+
+`ls /dockerfilevollab/`{{execute}}
+
