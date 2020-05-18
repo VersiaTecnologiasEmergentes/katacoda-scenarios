@@ -83,9 +83,13 @@ Ahora vamos a lanzar un nuevo contenedor con un Volumen apuntando al directorio 
 
 Una vez en la consola del contenedor, comprobamos si estamos viendo los contenidos del directorio del host:
 
-`ls /containervolume/`{{execute}}
+`ls /containerlab/`{{execute}}
 
 Como podemos ver, tenemos acceso al archivo desde el contenedor aunque, físicamente, el archivo está alojado en el host. Todos los cambios que realicemos sobre el directorio desde el contenedor se verán reflejados en el host.
+
+Por último, salimos del contenedor:
+
+`exit`{{execute}}
 
 ## Volumenes desde Dockerfile.
 Al igual que desde consola, podemos crear o utilizar volumenes a través de los ficheros de tipo Dockerfile para la creación de Imágenes. La cláusula a utilizar en los ficheros Dockerfile para la utilización de volúmenes es **_VOLUME_** seguido del path al que lo queremos vincular.

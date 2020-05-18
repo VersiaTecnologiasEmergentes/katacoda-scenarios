@@ -119,15 +119,11 @@ Si ahora ejecutamos un inspect sobre la red labnet veremos las redes asignadas a
 
 Para comprobar que tenemos red entre ellos podemos hacer attach a uno de los contenedores y probar.
 
-`docker attach vlab1`{{execute}}
+`docker exec -ti vlab1 sh`{{execute}}
 
 `ping -c 3 vlab2`{{execute}}
 
 `exit`{{execute}}
-
-Al salir, katakoda mata el container, por lo que debemos levantarlo otra vez. En un entorno normal saldríamos de la consola con "^q^p"
-
-`docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
 
 Vamos a complicarlo un poco más creando otra red y levantaremos un contenedor en esta nueva red.
 
