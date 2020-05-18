@@ -5,11 +5,11 @@
 
 - Redes en Docker.
 
-- Primeras Pruebas
+- Primeras Pruebas.
 
 - Pruebas con las redes.
 
-- Red HOST
+- Red HOST.
 
 - Configurando el NAT para redireccionar la conectividad externa.
 
@@ -63,7 +63,7 @@ Podemos revisar sus carecterísticas con:
 
 `docker network inspect test`{{execute}}
 
-SI queremos ver como responde el Gateway de la nueva red:
+Si queremos ver como responde el Gateway de la nueva red:
 
 `ping 172.18.0.1 -c 3`{{execute}}
 

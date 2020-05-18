@@ -2,13 +2,13 @@
 
 **Contenido**
 
-- Descripción de Volumen en Docker y Ventajas.
+- Descripción de Volumen en Docker.
 
 - Volumenes desde linea de comandos.
 
 - Volúmenes desde Dockerfile.
 
-## Descripción de Volumen en Docker y Ventajas.
+## Descripción de Volumen en Docker.
 Por defecto, todos los ficheros creados dentro de un contenedor son almacenados en su capa de escritura, lo que significa que:
 
 * Los datos no persisten cuando el contenedor deja de existir y puede ser complicado extraer los datos del contenedor si otro proceso lo necesita.
@@ -17,4 +17,10 @@ Por defecto, todos los ficheros creados dentro de un contenedor son almacenados 
 
 Docker proporciona dos opciones para que los contenedores almacenen archivos en el equipo Host, de modo que los archivos se conserven incluso después que el contenedor se detenga: **_Volumes_** y **_bind mounts_**. Además, si estamos ejecutando Docker en Linux, también podemos utilizar **_tmpfs mount_**. Si estamos utilizando Docker en Windows también podemos utilizar **_named pipes_**.
 
-## Agregar volúmenes en docker-compose
+## Volumenes desde linea de comandos.
+El comando que utilizaremos desde linea de comandos para la creación de volúmenes es "docker volume create". Un punto a tener en cuenta es darle un nombre que permita, a posteriori, localizar y asignar Volúmnes de Docker a contenedores.
+
+Un ejemplo de creación de Volumen podría ser el siguiente:
+
+`docker volume create --name lab-volume`{{execute}}
+
