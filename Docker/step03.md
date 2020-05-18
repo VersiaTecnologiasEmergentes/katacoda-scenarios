@@ -78,8 +78,6 @@ CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "webapp.wsgi:application"]
 
 **Nota**: Podemos crear el fichero utilizando los siguientes comandos. Después copiaremos el contenido de las líneas anteriores en el editor y guardaremos los cambios mediante `Ctrl + X` y `Yes`.
 
-`touch Dockerfile`{{execute}}
-
 `nano Dockerfile`{{execute}}
 
 Una vez definida nuestra imagen personalizada, podemos construirla utilizando el comando `docker build -t NOMBRE .`, dónde *NOMBRE* hace referencia al nombre que queramos darle a la imagen (si ya existe una imagen con el mismo nombre en nuestro sistema la sustituirá, por lo que podemos usar el formato *NOMBRE:ETIQUETA*), y el `.` final indica que la construya en base a las instrucciones del fichero Dockerfile que se encuentra en nuestro directorio actual.
@@ -88,7 +86,7 @@ Una vez definida nuestra imagen personalizada, podemos construirla utilizando el
 
 Tras descargar la imagen base (ubuntu), comenzará la descarga de los paquetes necesarios y seguirá las instrucciones de nuestra plantilla.
 
-Al finalizar, podremos ver que nuestra imagen ya forma parte de nuestro sistema:
+Al finalizar, podremos ver que nuestra imagen `webapp` ya forma parte de nuestro sistema:
 
 `docker images`{{execute}}
 
@@ -137,7 +135,7 @@ A continuación, etiquetaremos nuestra imagen con una versión inicial (*1.0*), 
 
 Copiamos el ID y lo utilizamos para etiquetar nuestra imagen:
 
-`docker tag IMAGE_ID DOCKER_ID/webapp:0.1`
+`docker tag IMAGE_ID DOCKER_ID/webapp:1.0`
 
 Con la imagen etiquetada, ya tenemos todo preparado para subirla a nuestro repositorio. En primer lugar, deberemos acreditar las credenciales de nuestro usuario:
 
@@ -145,10 +143,10 @@ Con la imagen etiquetada, ya tenemos todo preparado para subirla a nuestro repos
 
 Finalmente, utilizamos el comando `docker push` para almacenar la imagen en Docker Hub.
 
-`docker push DOCKER_ID/webapp:0.1`
+`docker push DOCKER_ID/webapp:1.0`
 
 ![Imagen en el registro](./assets/docker_hub_uploaded.png)
 
 A partir de este momento, podemos descargar nuestra imagen desde el registro remoto en cualquier sistema utilizando el comando que se nos muestra en la página de la imagen:
 
-`docker pull oscarpdr/webapp:0.1`
+`docker pull oscarpdr/webapp:1.0`

@@ -15,13 +15,15 @@ El primer acercamiento lo podemos realizar mediante un fichero que ejecute la im
 
 Para ello, crearemos un fichero llamado **docker-compose.yml** (la extensión *.yaml* también es válida) y copiaremos en él el siguiente contenido (es **muy importante** respetar el espaciado, ya que *YAML* es un formato basado en la tabulación mediante espacios):
 
+`nano docker-compose.yml`{{execute}}
+
 ```
 version: '3'
 
 services:
 
   django_webapp:
-    image: oscarpdr/webapp:0.1
+    image: oscarpdr/webapp:1.0
     ports:
       - 8000:8000
     container_name: django_webapp
@@ -41,9 +43,17 @@ A continuación, ejecutamos el comando `docker-compose up` para desplegar la arq
 
 ![docker-compose up](./assets/docker-compose_up.png)
 
-Podemos observar que la imagen se ha descargado del registro para instanciarla dentro de un contenedor al que hemos denominado `django_webapp`. Si queremos consultar sus *logs* (al menos aquellos redirigidos a la salida estándar), como si hubiéramos ejecutado el comando sin el modificador `-d`, podemos emplear el siguiente comando:
+Podemos observar que la imagen se ha descargado del registro para instanciarla dentro de un contenedor al que hemos denominado `django_webapp`.
+
+La aplicación web desplegada puede ser accedida, nuevamente, desde el equivalente a [localhost:8000](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com).
+
+Si queremos consultar sus *logs* (al menos aquellos redirigidos a la salida estándar), podemos emplear el siguiente comando (solo nos mostrará las últimas líneas del log y nos devolverá el control a la consola):
 
 `docker-compose logs`{{execute}}
+
+También podemos utilizar modificadores del comando `docker-compose logs` para mantener vivo el registro de logs y observar en tiempo real cualquier tipo de incidencia que sea notificada (hasta que la consola recupere el control a través de `Ctrl + C`). En este caso, recuperaremos los últimos 100 registros de logs y obtendremos las nuevas entradas a medida que sucedan:
+
+`docker-compose logs --tail 100 -f`{{execute}}
 
 Para parar el contenedor en ejecución y eliminarlo podemos utilizar el comando `docker-compose down`, el cual buscará todos los servicios referenciados en nuestro fichero *docker-compose.yml*, parará sus contenedores y los eliminará. Las imágenes continúan descargadas en nuestro sistema.
 
@@ -58,11 +68,13 @@ En esta etapa, vamos a utilizar *Docker compose* para gestionar múltiples conte
 
 En primer lugar, clonaremos [el repositorio](https://github.com/VersiaTecnologiasEmergentes/docker_webapp) con el código de la aplicación web generada anteriormente. Para ello, utilizaremos el software de versionado *git*:
 
-`git pull https://github.com/VersiaTecnologiasEmergentes/docker_webapp.git`{{execute}}
+`git clone https://github.com/VersiaTecnologiasEmergentes/docker_webapp.git`{{execute}}
 
 A continuación, situaremos nuestro directorio de trabajo dentro del repositorio que acabamos de clonar (descargar):
 
 `cd docker_webapp`{{execute}}
+
+`ll`{{execute}}
 
 En este directorio, podemos observar que contamos con varios ficheros y directorios:
 
@@ -88,6 +100,11 @@ Por último, levantaremos un **grafana** para visualizar las métricas de *prome
 Mediante `docker-compose up` podemos ejecutar toda la definición, seguros de que se respetarán las prioridades e instrucciones específicas de cada contenedor:
 
 `docker-compose up -d`{{execute}}
+
+Esto nos permitirá acceder a:
+- [Aplicación web](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com)
+- [Grafana](https://[[HOST_SUBDOMAIN]]-3000-[[KATACODA_HOST]].environments.katacoda.com)
+- [Prometheus](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com)
 
 Finalmente, podemos parar todos los contenedores de forma segura lanzando:
 
