@@ -2,7 +2,7 @@
 
 En Docker, uno de los conceptos básicos es el de **imagen**. Una imagen de docker es una especie de plantilla de solo lectura que permite describir un entorno que pueda ser ejecutado en un **contenedor**.
 
-Podemos entender una **imagen** como una instantánea de un contenedor. Las imágenes son inmutables, y podemos ejecutar varias instancias de ellas en diferentes contenedores.
+Podemos entender una imagen como una instantánea de un contenedor. Las imágenes son inmutables, y podemos ejecutar varias instancias de ellas en diferentes contenedores.
 
 En este apartado, veremos como ejecutar una imagen "base". Más adelante, veremos como extender una imagen base, y crear nuestras propias plantillas.
 
@@ -23,6 +23,8 @@ Podemos hacer búsquedas de imagénes en este repositorio usando *docker search*
 
 `docker search redis`{{execute}}
 
+Este comando nos mostrará un listado de los repositorios cuyo nombre incluye la palabra de nuestra búsqueda, junto con información relacionada con cada uno de esos repositorios (breve descripción, popularidad, etc).
+
 La primera imagen base que utilizaremos es la de [hello world](https://hub.docker.com/_/hello-world). Si accedemos al enlace, podemos ver información básica de la plantilla, así como copiar el comando para descargarnos la imagen a nuestro sistema:
 
 `docker pull hello-world`{{execute}}
@@ -39,7 +41,7 @@ Cuando descargamos una imagen, dicha plantilla está presente en nuestro sistema
 
 ![Running images](./assets/docker_ps.png)
 
-Nota**: Los nombres de los contenedores se generan de forma automática (a no ser que se especifique un nombre de contenedor concreto). Por tanto, es posible que los nombres mostrados en la imagen no se correspondan con los de vuestro sistema.
+**Nota**: Los nombres de los contenedores se generan de forma automática (a no ser que se especifique un nombre de contenedor concreto). Por tanto, es posible que los nombres mostrados en la imagen no se correspondan con los de vuestro sistema.
 
 
 ## Ejecutar una imagen
@@ -59,6 +61,7 @@ Si ejecutamos nuevamente el comando `docker ps` no veremos ningún contenedor ej
 Si volvemos a ejecutar la imagen (`docker run hello-world`), nos creará una nueva instancia en un nuevo contenedor.
 
 `docker run hello-world`{{execute}}
+
 `docker ps -a`{{execute}}
 
 ![Docker ps -a (2)](./assets/docker_ps_-a_2.png)
@@ -66,6 +69,7 @@ Si volvemos a ejecutar la imagen (`docker run hello-world`), nos creará una nue
 Si queremos volver a ejecutar o levantar un contenedor que se encuentra actualmente parado, podemos hacerlo mediante el comando `docker container start|restart CONTAINER_ID` (no es necesario especificar el ID completo del contenedor, normalmente con los 3-4 primeros caracteres ya se identifican de forma unívoca):
 
 `docker container start 2dc`{{execute}}
+
 `docker ps -a`{{execute}}
 
 ![Docker ps -a (3)](./assets/docker_ps_-a_3.png)
@@ -73,9 +77,10 @@ Si queremos volver a ejecutar o levantar un contenedor que se encuentra actualme
 
 ## Ejecución en modo interactivo
 
-En las ocasiones en las que queramos interactuar con la ejecución de una imagen en un contenedor, podemos ejecutarla en *modo interactivo*. Por ejemplo, a continuación vamos a descargar la imagen **alpine** (una versión muy ligera de un entorno *Linux*) del registro de *Docker Hub* y ejecutarla en modo interactivo, habilitando una consola dentro del contenedor:
+En las ocasiones en las que queramos interactuar con la ejecución de una imagen en un contenedor, podemos ejecutarla en *modo interactivo*. Por ejemplo, a continuación vamos a descargar la imagen [alpine](https://hub.docker.com/_/alpine) (una versión muy ligera de un entorno *Linux*) del registro de *Docker Hub* y ejecutarla en modo interactivo, habilitando una consola dentro del contenedor:
 
 `docker pull alpine`{{execute}}
+
 `docker run -it alpine sh`{{execute}}
 
 A continuación, podemos emplear el comando `ls -l` para listar los archivos y directorios de la raíz del sistema, que aquellos familiarizados con *Linux* reconocerán.
@@ -90,6 +95,7 @@ Para salir de la instancia de este contenedor, podemos emplear la combinación `
 Cuando utilizamos el comando `pull`, si no especificamos nada más que el nombre de la imagen, nos bajará la última versión disponible de la misma, etiquetada como `:latest`. Por tanto, los siguientes dos comandos descargan la misma imagen a nuestro sistema:
 
 `docker pull IMAGEN`
+
 `docker pull IMAGEN:latest`
 
 No obstante, podemos bajar otras versiones especificando una **etiqueta** (o *tag*) en particular.
@@ -101,6 +107,7 @@ En la página de una imagen en *Docker Hub*, disponemos de una pestaña de **Tag
 Por ejemplo, hagamos la prueba de recuperar una segunda versión de la imagen oficial de **alpine**:
 
 `docker pull alpine:3.7`{{execute}}
+
 `docker images`{{execute}}
 
 ![Varias versiones de la imagen *alpine*](./assets/alpine_images.png)
@@ -122,3 +129,13 @@ Tras unas cuantas sesiones de uso en docker, podemos acabar con muchas imágenes
 Cuando no queramos seguir almacenando una imagen en nuestro sistema (bien sea porque es defectuosa, vamos a sustituirla o no queremos que siga ocupando espacio de almacenamiento), podemos proceder a su eliminación mediante el comando `docker rmi`.
 
 `docker rmi hello-world`{{execute}}
+
+En caso de que la imagen se encuentre asociada a un contenedor, docker nos notificará de ello mediante un mensaje en pantalla.
+
+Podemos forzar el borrado de la imagen mediante el modificador `-f`:
+
+`docker rmi -f hello-world`{{execute}}
+
+Si listamos nuevamente las imágenes presentes en nuestro sistema, veremos que `hello-world` ya no está disponible:
+
+`docker images`{{execute}}
