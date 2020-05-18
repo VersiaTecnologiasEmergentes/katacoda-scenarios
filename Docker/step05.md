@@ -125,7 +125,7 @@ Para comprobar que tenemos red entre ellos podemos hacer attach a uno de los con
 
 `exit`{{execute}}
 
-AL salir, katakoda mata el container, por lo que debemos levantarlo otra vez. En un entorno normal saldríamos de la consola con "^q^p"
+Al salir, katakoda mata el container, por lo que debemos levantarlo otra vez. En un entorno normal saldríamos de la consola con "^q^p"
 
 `docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
 
