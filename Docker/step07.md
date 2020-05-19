@@ -6,7 +6,7 @@
 - Instalación Clair
 - Escaneo de imagen
 
-La seguridad en docker es un tema muy amplio y recomendamos revisar la siguiente guía: **CIS Docker Benchmark** . En ella se recogen la mayoría de las consideraciones que tenemos que tener cuando administramos un entorno Docker.
+La seguridad en docker es un tema muy amplio y recomendamos revisar la siguiente guía: **[CIS Docker Benchmark](https://www.cisecurity.org/benchmark/docker/)** . En ella se recogen la mayoría de las consideraciones que tenemos que tener cuando administramos un entorno Docker.
 
 En este pequeño apartado hemos decidido hacer algo un poco más interesante. Vamos a instalar CoreOs Clair para ver como se analizan vulnerabilidades en las imágenes. Esta herramienta suele estar integrada con los principales Docker Registry para poder controlar la seguridad de las imágenes que usamos en nuestro entorno.
 

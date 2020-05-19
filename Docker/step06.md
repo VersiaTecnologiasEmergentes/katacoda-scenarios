@@ -28,17 +28,20 @@ version: '3'
 services:
 
   django_webapp:
-    image: oscarpdr/webapp:1.0
+    image: USERNAME/webapp:1.0
     ports:
       - 8000:8000
     container_name: django_webapp
 ```
+Antes de salvar el fichero debemos modificar el usuario utilizado en el registro realizado en DockerHub anteriormente. En caso que modificaramos el nombre del repositorio también debemos sustituir "webapp" por el nombre que deseemos.
 
 Este fichero de composición especifica que utilizaremos la versión 3 del modelo de definición de docker-compose (más información sobre versionado y actualizaciones entre versiones en la [documentación oficial](https://docs.docker.com/compose/compose-file/compose-versioning/)).
 
 Después, describe un servicio de nombre `django_webapp` que ejecutará una instancia de la imagen `oscarpdr/webapp:0.1` en un contenedor de nombre `django_webapp`.
 
 A continuación, ejecutamos el comando `docker-compose up` para desplegar la arquitectura definida. En caso de que tengamos varios ficheros docker-compose, podemos indicar el deseado con el modificador `docker-compose -f NOMBRE_FICHERO up`. Todos los parámetros pueden ser consultados a través de `docker-compose --help`. También podemos ejecutar el proceso en segundo plano, disponiendo de nuevo de la consola.
+
+En caso que hayamos modificado el usuario, repositorio, antes de continuar debemos hacer "login" con nuestras credenciales ya que, de otra forma, Docker no podría realizar la descarga de la imagen. Recordemos que para hacer "login" teníamos que utilizar el comando "docker login".
 
 `docker ps`{{execute}}
 
