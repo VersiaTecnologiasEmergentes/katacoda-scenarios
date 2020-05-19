@@ -37,7 +37,7 @@ El ejemplo que vamos a desplegar es el siguiente compuesto de dos containers. Un
 
 ![multi-pod](./assets/Multi-pod.png)
 
-En este ejemplo, definimos un volumen llamado html . Su tipo es emptyDir , lo que significa que el volumen se crea por primera vez cuando se asigna un Pod a un nodo, y existe mientras ese Pod se esté ejecutando en ese nodo. Como su nombre lo dice, inicialmente está vacío. El primer contenedor ejecuta el servidor nginx y tiene el volumen compartido montado en el directorio / usr / share / nginx / html . El segundo contenedor usa la imagen de Debian y tiene el volumen compartido montado en el directorio / html . Cada segundo, el segundo contenedor agrega la fecha y hora actuales al index.htmlarchivo, que se encuentra en el volumen compartido. Cuando el usuario realiza una solicitud HTTP al Pod, el servidor Nginx lee este archivo y lo transfiere al usuario en respuesta a la solicitud.
+En este ejemplo, definimos un volumen llamado html . Su tipo es emptyDir , lo que significa que el volumen se crea por primera vez cuando se asigna un Pod a un nodo, y existe mientras ese Pod se esté ejecutando en ese nodo. Como su nombre lo dice, inicialmente está vacío. El primer contenedor ejecuta el servidor nginx y tiene el volumen compartido montado en el directorio /usr/share/nginx/html . El segundo contenedor usa la imagen de Debian y tiene el volumen compartido montado en el directorio / html . Cada segundo, el segundo contenedor agrega la fecha y hora actuales al index.htmlarchivo, que se encuentra en el volumen compartido. Cuando el usuario realiza una solicitud HTTP al Pod, el servidor Nginx lee este archivo y lo transfiere al usuario en respuesta a la solicitud.
 
 En el siguiente yaml podemos ver el despliegue que vamos a hacer.
 

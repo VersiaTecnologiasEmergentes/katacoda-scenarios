@@ -34,6 +34,8 @@ Vamos a hacer algunas sencillas pruebas:
 
 `curl http://localhost:8080/api/v1/namespaces/default/pods/webserver2`{{execute}}
 
+![image-20200518090301039](D:\00.REPOS\katacoda-scenarios\kubernetes-101\kubernetes-101-02\assets\API.png)
+
 Y ahora vamos a usar una de las funcionalidades del API para ver lo que el contenedor está exponiendo:
 
 `curl http://localhost:8080/api/v1/namespaces/default/pods/webserver2/proxy/`{{execute}} 

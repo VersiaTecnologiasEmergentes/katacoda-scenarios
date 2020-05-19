@@ -23,7 +23,7 @@ A continuación algunas pruebas con los selectores:
 
 `kubectl get pods --show-labels -l estado=testing`{{execute}}
 
-`kubectl get pods --show-labels -l responsable!=sistemas`{{execute}}
+`kubectl get pods --show-labels -l responsable!=Sistemas`{{execute}}
 
 `kubectl get pods --show-labels -l 'estado in(desarrollo)'`{{execute}}
 

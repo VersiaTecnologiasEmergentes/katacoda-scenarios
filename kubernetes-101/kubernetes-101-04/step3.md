@@ -8,6 +8,8 @@ Para volver atrás:
 
 `kubectl rollout undo deployment nginx-deployment`{{execute}}
 
+`kubectl get pods`{{execute}}
+
 Podemos ver como los Pods han vuelto a la versión anterior:
 
 `kubectl describe pods`{{execute}}

@@ -8,7 +8,7 @@ vamos a lanzar un deployment:
 
 vamos a crear el servicio de modo imperativo
 
-``kubectl expose deployment webserver --name=webserver-svc --target-port=80 --type=NodePort`{{execute}}
+`kubectl expose deployment webserver --name=webserver-svc --target-port=80 --type=NodePort`{{execute}}
 
 Para comprobarlo:
 
@@ -25,9 +25,3 @@ Podemos hacer la prueba de escalar:
 `minikube ip`{{execute}}
 
 
-
-export CLUSTER_IP=$(kubectl get services/webserver-svc -o go-template='{{(index .spec.clusterIP)}}') 
-
-echo CLUSTER_IP=$CLUSTER_IP 
-
-curl $CLUSTER_IP:80
