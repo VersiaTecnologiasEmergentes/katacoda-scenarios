@@ -1,6 +1,16 @@
+
 # Limpieza
 
+**CONTENIDO**
+
+- Imágenes
+- Contenedores
+- Volúmenes
+- Redes
+- Sistema
+
 En este apartado mostraremos algunos de los comandos más útiles para limpiar nuestros sistemas y deshacernos de los componentes que ya no utilizamos o que pueden estar ocasionando conflictos.
+
 
 
 ## Imágenes
@@ -20,6 +30,7 @@ Finalmente, podemos eliminar **todas** las imágenes concatenando comandos media
 Esta llamada ejecuta el comando `rmi` pasándole como parámetros los IDs (`-q`) de todas las imágenes (`docker images -a`) en el sistema.
 
 
+
 ## Contenedores
 
 De forma análoga a `rmi` (remove images), el comando `rm` nos permite eliminar contenedores del sistema:
@@ -29,6 +40,7 @@ De forma análoga a `rmi` (remove images), el comando `rm` nos permite eliminar 
 También podemos emplear una fórmula similar para eliminar **todos** los contenedores:
 
 `docker rm $(docker ps -a -q)`
+
 
 
 ## Volúmenes
@@ -44,6 +56,7 @@ Existe también un atajo para borrar **todos** los volúmenes con un solo comand
 Opcionalmente, al borrar un contenedor, podemos borrar su volúmen relacionado utilizando el modificador `-v` al ejecutar el comando.
 
 
+
 ## Redes
 
 Por último, las redes creadas también pueden ser eliminadas mediante:
@@ -53,6 +66,7 @@ Por último, las redes creadas también pueden ser eliminadas mediante:
 O bien borrar **todas** las redes del sistema con:
 
 `docker network prune`
+
 
 
 ## Sistema

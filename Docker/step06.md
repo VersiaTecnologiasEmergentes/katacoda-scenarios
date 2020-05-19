@@ -1,231 +1,122 @@
 
-# Redes
+# Agrupando contenedores: docker-compose
 
 **CONTENIDO**
 
-- Redes en Docker.
+- Docker-compose
+- Composición multi-contenedor
 
-- Primeras Pruebas
 
-- Pruebas con las redes.
 
-- Red HOST
+## Docker-compose
 
-- Configurando el NAT para redireccionar la conectividad externa.
+En nuestra operativa diaria, a menudo nos encontramos con arquitecturas complejas e interconectadas que no se solucionan con la creación de un solo entorno.
 
-  
+Son estas situaciones las que nos permiten dar el siguiente paso en el ecosistema Docker: **Docker compose**.
 
-## Redes en Docker
+A través de un fichero [YAML](https://yaml.org/), podemos definir los componentes que interactúan entre sí para definir nuestra arquitectura, así como las dependencias entre ellos y la configuración necesaria para su ejecución.
 
-La implementación nativa de Docker nos proporciona los elementos básicos para la creación de las redes y por tanto el establecimiento de las comunicaciones contenedor-contenedor y contenedor-host. Cuando el proceso Docker se ejecuta, configura una nueva interfaz puente virtual llamada docker0 en el sistema host. Esta interface permite a Docker crear una sub-red virtual que usaran los contenedores que se ejecuten.
+El primer acercamiento lo podemos realizar mediante un fichero que ejecute la imagen creada anteriormente, recuperándola del registro de Docker Hub.
 
-`ifconfig`{{execute}}
+Para ello, crearemos un fichero llamado **docker-compose.yml** (la extensión *.yaml* también es válida) y copiaremos en él el siguiente contenido (es **muy importante** respetar el espaciado, ya que *YAML* es un formato basado en la tabulación mediante espacios):
 
-Cuando un contenedor se inicializa en el sistema, crea una nueva interfaz virtual a la que se le asigna una IP del rango de la subred docker0. Docker configurará de forma automática las reglas de iptables necesarias para redirigir y configurar la mascara NAT para el tráfico originado en el interfaz docker0 hacia el resto de redes.
+`nano docker-compose.yml`{{execute}}
 
-La red que configura Docker es la 172.17.0.xx, el propio servidor docker es 172.17.0.1 y cada contenedor corriendo adquiere un IP posterior al último (172.117.0.2-254).
+```
+version: '3'
 
-Para comenzar el laboratorio levantaremos un pequeño contenedor en segundo plano, mediante:
+services:
 
-`docker run -id ubuntu /bin/bash`{{execute}}
+  django_webapp:
+    image: USERNAME/webapp:1.0
+    ports:
+      - 8000:8000
+    container_name: django_webapp
+```
+Antes de salvar el fichero debemos modificar el usuario utilizado en el registro realizado en DockerHub anteriormente. En caso que modificaramos el nombre del repositorio también debemos sustituir "webapp" por el nombre que deseemos.
 
-Al arrancar el contenedor podremos averiguar cual es la IP asignada con el siguiente comando:
+Este fichero de composición especifica que utilizaremos la versión 3 del modelo de definición de docker-compose (más información sobre versionado y actualizaciones entre versiones en la [documentación oficial](https://docs.docker.com/compose/compose-file/compose-versioning/)).
 
-`CONTAINER=$(docker ps -qa)`{{execute}}
+Después, describe un servicio de nombre `django_webapp` que ejecutará una instancia de la imagen `oscarpdr/webapp:0.1` en un contenedor de nombre `django_webapp`.
 
-`docker inspect --format '{{ .NetworkSettings.IPAddress }}' $CONTAINER`{{execute}}
+A continuación, ejecutamos el comando `docker-compose up` para desplegar la arquitectura definida. En caso de que tengamos varios ficheros docker-compose, podemos indicar el deseado con el modificador `docker-compose -f NOMBRE_FICHERO up`. Todos los parámetros pueden ser consultados a través de `docker-compose --help`. También podemos ejecutar el proceso en segundo plano, disponiendo de nuevo de la consola.
 
-Existen tres redes preconfiguradsa en Docker:
+En caso que hayamos modificado el usuario, repositorio, antes de continuar debemos hacer "login" con nuestras credenciales ya que, de otra forma, Docker no podría realizar la descarga de la imagen. Recordemos que para hacer "login" teníamos que utilizar el comando "docker login".
 
-1. **Bridge.** La red standard que usarán todos los contenedores.
-2. **Host.** El contenedor usará el mismo IP del servidor real que tengamos.
-3. **None.** Se utiliza para indicar que un contenedor no tiene asignada una red.
+`docker ps`{{execute}}
 
-Para ver el listado de redes que tenemos creadas:
+`docker-compose up -d`{{execute}}
 
-`docker network list`{{execute}}
+`docker ps`{{execute}}
 
-Podemos ver las características de cualquiera de ellas con *network inspect*:
+![docker-compose up](./assets/docker-compose_up.png)
 
-`docker network inspect bridge`{{execute}}
+Podemos observar que la imagen se ha descargado del registro para instanciarla dentro de un contenedor al que hemos denominado `django_webapp`.
 
+La aplicación web desplegada puede ser accedida, nuevamente, desde el equivalente a [localhost:8000](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com).
 
+Si queremos consultar sus *logs* (al menos aquellos redirigidos a la salida estándar), podemos emplear el siguiente comando (solo nos mostrará las últimas líneas del log y nos devolverá el control a la consola):
 
-## Primeras pruebas
+`docker-compose logs`{{execute}}
 
-Ahora vamos a empezar a jugar un poco más con las redes. Vamos a crear una red test que use de driver Bridge.
+También podemos utilizar modificadores del comando `docker-compose logs` para mantener vivo el registro de logs y observar en tiempo real cualquier tipo de incidencia que sea notificada (hasta que la consola recupere el control a través de `Ctrl + C`). En este caso, recuperaremos los últimos 100 registros de logs y obtendremos las nuevas entradas a medida que sucedan:
 
-`docker network create test`{{execute}}
+`docker-compose logs --tail 100 -f`{{execute}}
 
-`docker network ls`{{execute}}
+Para parar el contenedor en ejecución y eliminarlo podemos utilizar el comando `docker-compose down`, el cual buscará todos los servicios referenciados en nuestro fichero *docker-compose.yml*, parará sus contenedores y los eliminará. Las imágenes continúan descargadas en nuestro sistema.
 
-Podemos revisar sus carecterísticas con:
+`docker-compose down`{{execute}}
 
-`docker network inspect test`{{execute}}
+![docker-compose down](./assets/docker-compose_down.png)
 
-SI queremos ver como responde el Gateway de la nueva red:
 
-`ping 172.18.0.1 -c 3`{{execute}}
 
-Vamos a continuar ejecutando una instancia de Docker nueva asociándole directamente la nueva red:
+## Composición multi-contenedor
 
-`docker run -di -P --name vmlab1 --network test ubuntu`{{execute}}
+En esta etapa, vamos a utilizar *Docker compose* para gestionar múltiples contenedores, extendiendo ligeramente la funcionalidad vista hasta el momento.
 
-`docker ps -a`{{execute}}
+En primer lugar, clonaremos [el repositorio](https://github.com/VersiaTecnologiasEmergentes/docker_webapp) con el código de la aplicación web generada anteriormente. Para ello, utilizaremos el software de versionado *git*:
 
-`docker network inspect test`{{execute}}
+`git clone https://github.com/VersiaTecnologiasEmergentes/docker_webapp.git`{{execute}}
 
-Ahora tenemos al contenedor en nuestra red de test. Si queremos que tenga otro interfaz en la red de bridge y que se pueda ver con esos contenedores podemos seguir los siguientes pasos:
+A continuación, situaremos nuestro directorio de trabajo dentro del repositorio que acabamos de clonar (descargar):
 
-`docker network connect --link vmlab1:red2 bridge vmlab1`{{execute}}
+`cd docker_webapp`{{execute}}
 
-docker inspect b34311275bc4
+`ll`{{execute}}
 
-De la misma forma podemos desconectarlo de la red:
+En este directorio, podemos observar que contamos con varios ficheros y directorios:
 
-`docker network disconnect bridge vmlab1`{{execute}}
+- **Dockerfile**: Esta imagen es ligeramente diferente a la generada con anterioridad, no obstante, el resultado es muy similar. La principal diferencia radica en que en este caso utilizamos una imagen de *python v3.7 alpine* en lugar de una *Ubuntu*, el código de la aplicación web lo copiamos de nuestro sistema host al directorio `/code` de la imagen, y finalmente instalamos los paquetes necesarios mediante un fichero de requisitos.
+- **requirements.txt**: Fichero que recoge los paquetes necesarios para el funcionamiento de la aplicación.
+- **docker-compose.yml**: Este es el fichero más relevante dentro del repositorio, pasaremos a analizarlo a continuación.
+- **webapp/**: Código de una aplicación web en *Django* muy similar a la generada por defecto.
 
-`CONTAINER2=$(docker ps |grep vmlab1| cut -d " " -f1)`{{execute}}
+Ahora nos centraremos en comprender el contenido del fichero *docker-compose*:
 
-`docker inspect $CONTAINER2`{{execute}}
+`nano docker-compose.yml`{{execute}}
 
+Los dos primeros bloques hacen referencia a los volúmenes y redes que serán compartidas por todos los contenedores a los que hagamos referencia.
 
+Después, comenzamos a describir los servicios que formarán parte de nuestro entorno:
 
-Para limpiar el entorno, bastará con que paremos el Docker lo eliminemos y borremos las redes.
+El servicio **django_webapp** construye la imagen siguiendo las instrucciones del fichero *Dockerfile* del directorio actual (puede especificarse otra ruta). Mapea el puerto 8000 del host al del contenedor, y ejecuta mediante *bash* los comandos de *Django* necesarios para desplegar la aplicación web. La red será compartida con el resto de servicios, y mapeará el contenido de la carpeta *webapp/* del host con la carpeta *code/* del sistema de ficheros de la imagen instanciada.
 
-`docker stop $(docker ps -qa)`{{execute}}
+El segundo servicio, ejecuta un contenedor con **prometheus**, concretando su ejecución a través de los parámetros `command`. Hemos configurado la variable para que se reinicie el contenedor si se encuentra parado y no ha sido por una acción directa nuestra. Finalmente, mediante `depends_on` establecemos el orden de arranque: el contenedor *prometheus* esperará a que esté arrancada la instancia de *django_webapp* (lo que nos puede evitar arranque erróneos derivados de dependencias).
 
-`docker rm $(docker ps -qa)`{{execute}}
+Por último, levantaremos un **grafana** para visualizar las métricas de *prometheus* mapeando el puerto 3000. Este será el último servicio a desplegar.
 
-`docker network prune -f`{{execute}}
+Mediante `docker-compose up` podemos ejecutar toda la definición, seguros de que se respetarán las prioridades e instrucciones específicas de cada contenedor:
 
+`docker-compose up -d`{{execute}}
 
+Esto nos permitirá acceder a:
+- [Aplicación web](https://[[HOST_SUBDOMAIN]]-8000-[[KATACODA_HOST]].environments.katacoda.com)
+- [Grafana](https://[[HOST_SUBDOMAIN]]-3000-[[KATACODA_HOST]].environments.katacoda.com)
+- [Prometheus](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com)
 
-## Pruebas con las redes
+Finalmente, podemos parar todos los contenedores de forma segura lanzando:
 
-Vamos a crear un red llamada *labnet* y posteriormente levantaremos dos contenedores para hacer algunas pruebas.
+`docker-compose stop`
 
-Creamos la nueva red:
-
-`docker network create --driver bridge labnet`{{execute}}
-
-`docker network ls`{{execute}}
-
-Levantamos dos contenedores:
-
-`docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
-
-`docker run -dit --rm --name vlab2 --network labnet alpine sh`{{execute}}
-
-`docker ps -a`{{execute}}
-
-Si ahora ejecutamos un inspect sobre la red labnet veremos las redes asignadas a nuestros dos contenedores.
-
-`docker network inspect labnet`{{execute}}
-
-Para comprobar que tenemos red entre ellos podemos hacer attach a uno de los contenedores y probar.
-
-`docker attach vlab1`{{execute}}
-
-`ping -c 3 vlab2`{{execute}}
-
-`exit`{{execute}} 
-
-AL salir, katakoda mata el container, por lo que debemos levantarlo otra vez. En un entorno normal saldríamos de la consola con "^q^p"
-
-`docker run -dit --rm --name vlab1 --network labnet alpine sh`{{execute}}
-
-Vamos a complicarlo un poco más creando otra red y levantaremos un contenedor en esta nueva red.
-
-`docker network create --driver bridge labnet2`{{execute}}
-
-Comprobamos que la red se ha creado correctamente:
-
-`docker network list`{{execute}}
-
-`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
-
-Entramos en esta nueva máquina y comprobamos que no llegamos por ping ni a vlab1 ni a vlab2 ya que están en otra red.
-
-`docker attach vlab3`{{execute}}
-
-`ping -c 2 vlab2`{{execute}}
-
-`ping -c 2 vlab1`{{execute}}
-
-`exit`{{execute}} 
-
-`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
-
-Vamos a conectar vlab3 a la red labnet y comprobar que llemaos al resto de instancias.
-
-`docker network connect labnet vlab3`{{execute}}
-
-`docker attach vlab3`{{execute}}
-
-`ping -c2 vlab1`{{execute}}
-
-`ping -c2 vlab2`{{execute}}
-
-`exit`{{execute}} 
-
-`docker run -dit --rm --name vlab3 --network labnet2 alpine sh`{{execute}}
-
-
-
-Para terminar vamos a borrar todo para dejar el entorno lo más limpio posible.
-
-`docker stop $(docker ps -qa)`{{execute}}
-
-`docker network prune -f`{{execute}}
-
-
-
-## Red Host
-
-Si conectamos un contenedor a la red host estaremos exponiendo los servicios directamente desde el anfitrión. Para hacer una prueba rápida usaremos un contenedor *nginx* de la siguiente forma.
-
-Lanzamos la instncia del docker nginx en la red host:
-
-`docker run -d --rm --name nginx1 --network host nginx`{{execute}}
-
-Comprobamos que se ha levantado correctamente
-
-`docker ps -a`{{execute}}
-
-Probamos desde la máquina anfitrion:
-
-`curl localhost`{{execute}}
-
-Limpiamos para terminar esta prueba:
-
-`docker stop $(docker ps -qa)`{{execute}}
-
-
-
-## Configurando el NAT para redireccionar la conectividad externa.
-
-Vamos a ver como hacer NAT con los puertos de la red host hacia una estancia determinada.
-
-Creamos la instancia de nginx redirigiendo el puerto 8080 del host anfitrion al 80 de la instancia:
-
-`docker run -d --rm --name nginx1 -p 8080:80 nginx`{{execute}}
-
-`docker ps -a`{{execute}}
-
-Comprobamos que llegamos a través del host anfitrion por el 8080:
-
-`curl localhost:8080`{{execute}}
-
-Comprobamos la ip asignada a la instancia para comprobar que llegamos directamente por el puerto 80:
-
-`docker network inspect bridge`{{execute}}
-
-Hacemos: curl IP_ASIGNADA:80
-
-
-
-Para terminar limpiamos el entorno:
-
-`docker stop $(docker ps -qa)`{{execute}}
-
+**Nota**: Empleando `docker-compose down` además se borrarían los contenedores una vez parados, evitando en el futuro realizar un `docker rm CONTENEDOR_1 ... CONTENEDOR_n`
