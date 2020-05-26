@@ -1,6 +1,6 @@
 ## Labels
 
-Para nuestra primera prueba, vmaos a usar el siguiente *yaml*:
+Para nuestra primera prueba, vamaos a usar el siguiente *yaml*:
 
 ```yaml
 apiVersion: v1

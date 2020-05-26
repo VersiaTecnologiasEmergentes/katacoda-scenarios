@@ -33,7 +33,7 @@ El **Deployment** es la unidad de más alto nivel que podemos gestionar en Kuber
 - Despliegues automáticos.
 - Roolbacks a versiones anteriores.
 
-
+![image-20200525175553425](./assets/Deployments.png)
 
 
 
@@ -74,6 +74,14 @@ Desplegamos el deployment mediante:
 Vemos la información asociada al deployment:
 
 `kubectl get deploy`{{execute}}
+
+Comprobamos el estado del replicaset:
+
+`kubectl get rs`{{execute}}
+
+Un ReplicaSet se define mediante campos, que incluyen un selector que especifica cómo identificar los Pods que puede adquirir, una cantidad de réplicas que indica cuántos Pods debería mantener y una plantilla de pod que especifica los datos de nuevos Pods que debe crear para cumplir con el número de criterios de réplicas. Un ReplicaSet cumple su propósito al crear y eliminar Pods según sea necesario para alcanzar el número deseado. Cuando un ReplicaSet necesita crear nuevos Pods, usa su plantilla Pod.
+
+![image-20200525180207272](./assets/Replication_Controller_loop.png)
 
 `kubectl describe deployment nginx-deployment`{{execute}}
 

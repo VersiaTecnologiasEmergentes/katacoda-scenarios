@@ -17,6 +17,8 @@ Creamos el objeto de manera imperativa:
 
 `kubectl create -f kubernetes_101_lab/pod/lab1/nginx.yaml`{{execute}}
 
+`kubectl get pods`{{execute}}
+
 Volvemos a intentar crearlo:
 
 `kubectl create -f kubernetes_101_lab/pod/lab1/nginx.yaml`{{execute}}
@@ -31,5 +33,7 @@ Error from server (AlreadyExists): error when creating "kubernetes_101_lab/pod/l
 Ahora vamos a probar a usar el modo declarativo:
 
 `kubectl apply -f kubernetes_101_lab/pod/lab1/nginx.yaml`{{execute}}
+
+`kubectl get pods`{{execute}}
 
 Vemos que aunque lanza algún warning lo realiza correctamente porque lo que intenta no es crear el objeto, sino actualizar la definición del mismo.

@@ -46,3 +46,4 @@ La API actualmente soporta dos tipos de selectores: basados en igualdad y basado
 
 La semántica de selectores vacíos o no espefificados es dependiente del contexto, y los tipos de la API que utilizan los selectores deberían documentar su propia validación y significado.
 
+![image-20200525182410781](./assets/labels.png)

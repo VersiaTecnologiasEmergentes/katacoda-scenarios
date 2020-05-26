@@ -1,5 +1,9 @@
 # Persistent volume.
 
+
+
+![Kubernetes](./assets/2018-12-18-00_24_21-Minikube-and-Kubeadm-Google-Präsentationen.jpg)
+
 Vamos a ver el equivalente de los volumens de docker en Kubernetes. En el ejemplo anterior hemos asignado directamente al Pod los volumenes que queríamos. Ahora lo vamos a hacer mediante un volumen persistente. Para crearlo usaremos el siguiente yaml:
 
 ```yaml
@@ -20,6 +24,8 @@ spec:
 ```
 
 Creamos el directorio del volumen:
+
+`cd`{{execute}}
 
 `mkdir data`{{execute}}
 

@@ -66,7 +66,11 @@ Probamos el mapeo del directorio:
 
 Para ver que los datos persisten:
 
-`kubectl delete pod volume`{{execute}}
+`kubectl delete pod volumenes`{{execute}}
+
+`kubectl get pods`{{execute}}
+
+`ls -lar`{{execute}}
 
 Esta no es una forma óptima porque al Pod se le asigna un directorio de la máqiuna local. En un clúster tendríamos que ver la forma de que la información estuvierá sincronizada entre todos los nodos :).
 

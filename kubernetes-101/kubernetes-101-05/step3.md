@@ -11,6 +11,8 @@ Desplegamos todos mediante:
 
 `cd kubernetes_101_lab/labels/lab1/`{{execute}}
 
+`ls -lart`{{execute}}
+
 `kubectl apply -f .`{{execute}}
 
 Veamos todas las etiquetas:
